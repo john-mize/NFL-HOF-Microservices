@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "nfl-hof-predictor.fullname" . }}-test-connection"
+  labels:
+    {{- include "nfl-hof-predictor.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "nfl-hof-predictor.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
